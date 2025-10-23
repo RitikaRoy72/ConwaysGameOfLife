@@ -10,11 +10,10 @@ import os
 import numpy as np
 
 class ConwaysGame:
-    def __init__(self, board, size):
+    def __init__(self, size):
         # Initialize variables
-        self.board = board
+        # self.board = board
         self.size = size
-        pass
 
     def init_board(self):
         """Create initial board state append false to represent initial conditions.
@@ -29,8 +28,8 @@ class ConwaysGame:
         # self.board[2, 1] = 1
         # self.board[3, 2:4] = 1
         # self.board[2, 4] = 1
-        mid = self.size // 2
-        self.board[1, mid:self.size] = 1
+
+        self.board[1, 2:5] = 1
 
         self.draw()
 
@@ -56,7 +55,6 @@ class ConwaysGame:
             (1, -1),
             (-1, 1),
         ]
-        
         for r in range(0, self.size):
             for c in range(0, self.size):
                 count = 0
@@ -65,26 +63,24 @@ class ConwaysGame:
 
                     if (
                         0 <= h_neigh < self.size
-                        and 0 <= v_neigh < 5
+                        and 0 <= v_neigh < self.size
                         and (self.board[h_neigh][v_neigh] == 1)
                     ):
                         count += 1
 
                 if self.board[r, c] == 1 and (count < 2 or count > 3):
                     new_board[r, c] = 0
-                
-                elif (self.board[r, c] == 0 and (count > 1 or count < 4)):
+
+                elif (self.board[r, c] != 1 and (count >2 and count <4)):
                     new_board[r, c] = 1
-
-
         self.board = new_board
 
     def draw(self):
         """Method to represent board in consol
         TODO: Re-implement as a numpy graphical representation
         """
-        os.system("cls")
-        for n in range(0, self.size):
+        os.system("clear")
+        for n in range(0, len(self.board)):
             print(self.board[n])
         print("\n")
         time.sleep(1)
@@ -98,4 +94,4 @@ class ConwaysGame:
             self.draw()
 
 
-ConwaysGame([], 5).execute()
+ConwaysGame(9).execute()  

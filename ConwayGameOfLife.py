@@ -10,10 +10,11 @@ import os
 import numpy as np
 
 class ConwaysGame:
-    def __init__(self, size):
+    def __init__(self, size, kernelSize):
         # Initialize variables
         # self.board = board
         self.size = size
+        self.kernelSize = kernelSize
 
     def init_board(self):
         """Create initial board state append false to represent initial conditions.
@@ -43,18 +44,16 @@ class ConwaysGame:
         Dead cells with 2 live neighbors become alive
         BUGS: Error with the appending of live cells, live cells to the lower entrypoint
         """
-
         new_board = self.board.copy()
-        surround = [
-            (0, 1),
-            (1, 0),
-            (0, -1),
-            (-1, 0),
-            (1, 1),
-            (-1, -1),
-            (1, -1),
-            (-1, 1),
-        ]
+        surround = []
+        self.kernelSize = 3
+        kernel = int(self.kernelSize/2)
+        for x in range (-1*kernel, kernel+1):
+            for y in range (-1*kernel, kernel+1):
+                surround.append((x, y))
+                if((x == 0) and (y == 0)):
+                    surround.pop(-1)     
+        
         for r in range(0, self.size):
             for c in range(0, self.size):
                 count = 0
@@ -94,4 +93,12 @@ class ConwaysGame:
             self.draw()
 
 
-ConwaysGame(9).execute()  
+ConwaysGame(9, 5).execute()  
+""" (0, 1),
+ (1, 0),
+ (0, -1),
+ (-1, 0),
+ (1, 1),
+ (-1, -1),
+ (1, -1),
+ (-1, 1),"""
